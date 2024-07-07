@@ -10,15 +10,23 @@ export default function ScreenForm({ theatreID }) {
     categoryTOSeatNumber: {},
   });
 
-  const handleSeatData = (data) => {
-    setScreenForm({ ...setScreenForm, categoryTOSeatNumber: data });
+  const handleSeatData = (categoryToSeatNumbers) => {
+    setScreenForm({
+      ...ScreenForm,
+      categoryTOSeatNumber: categoryToSeatNumbers,
+    });
     axios
-      .post("http://localhost:5459/api/v1/create-screen", ScreenForm)
+      .post("http://localhost:5459/api/v1/create-screen", {
+        name: ScreenForm.name,
+        theatreID: ScreenForm.theatreID,
+        categoryTOSeatNumber: categoryToSeatNumbers,
+      })
       .then((response) => {
-        console.log("screen added : " + response.data);
+        console.log("screen added : ", response.data);
         setScreenForm({ name: "", theatreID: 0, categoryTOSeatNumber: {} });
       })
       .catch((error) => console.error(error));
+    <h1>Screen Form Submitted</h1>;
   };
 
   const toggleSeatForm = () => {
