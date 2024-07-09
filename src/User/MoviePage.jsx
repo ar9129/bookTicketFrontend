@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import MovieCard from "./MovieCard";
 import { Movies } from "./Movies";
+import axios from "axios";
 
 const MoviePage = () => {
   const filters = {
@@ -8,12 +9,63 @@ const MoviePage = () => {
     genres: ["Action", "Drama"],
     formats: ["2D", "3D"],
   };
+
+  const [cities, setCities] = useState([]);
+  const [selectedValue, setSelectedValue] = useState("");
+  const [moviesData, setMoviesData] = useState([]);
+  const getCities = async (e) => {
+    try {
+      const response = await axios.get("http://localhost:5459/api/v1/get-city");
+      console.log("cities are {}", response.data);
+      setCities(response.data);
+    } catch (error) {
+      console.log("error while getting cities is {}", error);
+    }
+  };
+
+  const handleCity = (event) => {
+    event.preventDefault();
+    setSelectedValue(event.target.value);
+    console.log("selected city", event.target.value);
+    axios
+      .get(`http://localhost:5459/api/v1/get-movies/${selectedValue}`)
+      .then((response) => {
+        console.log(
+          "list of movies in city",
+          { selectedValue },
+          "is",
+          response.data
+        );
+        setMoviesData(response.data);
+      })
+      .catch((error) => {
+        console.log("error while fetching cities", error);
+      });
+  };
+
+  useEffect(() => {
+    getCities();
+  }, []);
+
   return (
     <div className="container mx-auto my-8">
       <div className="flex flex-col md:flex-row">
         <aside className="w-full md:w-1/4 p-4">
           <div className="mb-4">
-            <div className="font-semibold mb-2">Choose your City :</div>
+            <div className="font-semibold mb-2  hover:getCities()">
+              Choose your City :
+              <select value={selectedValue} onChange={handleCity}>
+                {cities.map((city, index) => (
+                  <option key={city.id} value={city.id}>
+                    {city.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+            {/* //                 <option value="platinum">Platinum</option>
+//                 <option value="gold">gold</option>
+//                 <option value="silver">Silver</option>
+//   */}
 
             <h2 className="font-bold mb-2">Filters</h2>
             {Object.keys(filters).map((filterKey) => (
@@ -54,13 +106,33 @@ const MoviePage = () => {
             </div>
           </div> */}
 
-            {Movies.map((movie, index) => (
+            {moviesData.map((movie, index) => (
               <MovieCard
                 key={index}
-                title={movie.title}
-                releaseDate={movie.releaseDate}
-                overview={movie.overview}
-                posterUrl={movie.posterUrl}
+                title={movie.name}
+                releaseDate={movie.duration}
+                overview={movie.description}
+                posterUrl={movie.url}
+              />
+            ))}
+
+            {moviesData.map((movie, index) => (
+              <MovieCard
+                key={index}
+                title={movie.name}
+                releaseDate={movie.duration}
+                overview={movie.description}
+                posterUrl={movie.url}
+              />
+            ))}
+
+            {moviesData.map((movie, index) => (
+              <MovieCard
+                key={index}
+                title={movie.name}
+                releaseDate={movie.duration}
+                overview={movie.description}
+                posterUrl={movie.url}
               />
             ))}
           </div>
