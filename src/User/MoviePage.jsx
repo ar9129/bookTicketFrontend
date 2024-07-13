@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import MovieCard from "./MovieCard";
 import { Movies } from "./Movies";
 import axios from "axios";
+import { MovieDescription } from "./MovieDescription";
+import { useNavigate } from "react-router-dom";
 
 const MoviePage = () => {
   const filters = {
@@ -13,6 +15,8 @@ const MoviePage = () => {
   const [cities, setCities] = useState([]);
   const [selectedValue, setSelectedValue] = useState("");
   const [moviesData, setMoviesData] = useState([]);
+  const navigate = useNavigate();
+
   const getCities = async (e) => {
     try {
       const response = await axios.get("http://localhost:5459/api/v1/get-city");
@@ -37,6 +41,7 @@ const MoviePage = () => {
           response.data
         );
         setMoviesData(response.data);
+        navigate(`/movies/${selectedValue}`);
       })
       .catch((error) => {
         console.log("error while fetching cities", error);
@@ -56,7 +61,7 @@ const MoviePage = () => {
               Choose your City :
               <select value={selectedValue} onChange={handleCity}>
                 {cities.map((city, index) => (
-                  <option key={city.id} value={city.id}>
+                  <option key={city.id} value={city.name}>
                     {city.name}
                   </option>
                 ))}
@@ -108,31 +113,15 @@ const MoviePage = () => {
 
             {moviesData.map((movie, index) => (
               <MovieCard
-                key={index}
+                town={selectedValue}
                 title={movie.name}
                 releaseDate={movie.duration}
                 overview={movie.description}
                 posterUrl={movie.url}
-              />
-            ))}
-
-            {moviesData.map((movie, index) => (
-              <MovieCard
-                key={index}
-                title={movie.name}
-                releaseDate={movie.duration}
-                overview={movie.description}
-                posterUrl={movie.url}
-              />
-            ))}
-
-            {moviesData.map((movie, index) => (
-              <MovieCard
-                key={index}
-                title={movie.name}
-                releaseDate={movie.duration}
-                overview={movie.description}
-                posterUrl={movie.url}
+                genres={movie.genre}
+                languagetoFormat={movie.languageFormat}
+                formats={movie.format}
+                rating={movie.rating}
               />
             ))}
           </div>
