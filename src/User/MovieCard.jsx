@@ -1,6 +1,6 @@
 // src/components/MovieCard.js
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const MovieCard = ({
   town,
@@ -13,12 +13,14 @@ const MovieCard = ({
   formats,
   rating,
 }) => {
+  let { city } = useParams();
   const navigate = useNavigate();
 
   function goToDescription() {
-    navigate(`/movies/${town}/movie-description/${title}`, {
+    navigate(`/movies/${city}/movie-description/${title}`, {
       state: {
-        town: town, // Ensure to include town in state
+        town: town,
+        cityName: city, // Ensure to include town in state
         title: title,
         releaseDate: releaseDate,
         overview: overview,
