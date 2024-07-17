@@ -179,6 +179,7 @@ const MoviePage = () => {
         .get(`http://localhost:5459/api/v1/get-movies/${selectedCity.name}`)
         .then((response) => {
           setMoviesData(response.data);
+          console.log("fetched movies are", response.data);
           navigate(`/movies/${selectedCity.name}`);
         })
         .catch((error) => {

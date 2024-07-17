@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
 
 export function MovieDescription() {
@@ -18,18 +19,28 @@ export function MovieDescription() {
     setShowPopup(false);
   };
 
-  function handleTicket(e) {
+  async function handleTicket(e) {
     e.preventDefault();
     const value = e.target.value;
-    const [language, format] = value.split("-");
+    const [language, format1] = value.split("-");
+    // try {
+    //   console.log("Fetching shows for town:", town); // Log the town once
+    //   const response = await axios.get(
+    //     `http://localhost:5459/api/v1/get-shows/${town}/${title}/${language}/${format1}`
+    //   );
+    //   console.log("Fetched shows:", response.data); // Log fetched shows once
+    //   setShows(response.data); // Set shows state with the fetched data
+    // } catch (error) {
+    //   console.log("Error fetching shows:", error);
+    // }
     navigate(
-      `/buytickets/${title}/${language}/${format}/${cityName}/movie-MT`,
+      `/buytickets/${title}/${language}/${format1}/${cityName}/movie-MT`,
       {
         state: {
           title: title,
           cityName: cityName,
           language: language,
-          format: format,
+          format1: format1,
           town: town,
         },
       }
