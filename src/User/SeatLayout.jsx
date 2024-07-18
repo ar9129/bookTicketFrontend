@@ -5,6 +5,9 @@ import { useLocation } from "react-router-dom";
 const SeatLayout = () => {
   const [seats, setSeats] = useState([]);
   const location = useLocation();
+  const [selectedSeats, setSelectedSeats] = useState(new Set());
+  const [payPrice, setPayPrice] = useState(0);
+  let totalPrice = 0;
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,7 +32,25 @@ const SeatLayout = () => {
 
   console.log(seats);
 
-  function handleSelectedSeat() {}
+  function handleSelectedSeat(seat) {
+    const newSelectedseats = new Set(selectedSeats);
+    if (newSelectedseats.has(seat)) {
+      newSelectedseats.delete(seat);
+    } else {
+      newSelectedseats.add(seat);
+    }
+    console.log(newSelectedseats);
+
+    setSelectedSeats(newSelectedseats);
+    const selectedSeatsArray = Array.from(newSelectedseats);
+    selectedSeatsArray.map((selectedSeat) => {
+      totalPrice = totalPrice + selectedSeat.price;
+    });
+
+    setPayPrice(totalPrice);
+  }
+
+  function handlePayment() {}
   // Function to render seats in a 2D grid
   const renderSeatGrid = () => {
     // Collect all unique row identifiers (A, B, C, etc.)
@@ -51,16 +72,21 @@ const SeatLayout = () => {
         <div key={rowIdentifier} className="seat-row ">
           <div className="m-6">
             {rowIdentifier}
-            {rowSeats.map((seat) => (
-              <span
-                onSelect={handleSelectedSeat}
-                key={seat.id}
-                //className={`seat ${seat.booked ? "booked" : ""}`}
-                className="border-solid border-2 border-x-teal-500 pl-2 pr-2 pt-1 pb-1 m-2"
-              >
-                {seat.seatNumber.charAt(1)}
-              </span>
-            ))}
+            {rowSeats.map((seat) => {
+              const isselected = selectedSeats.has(seat);
+              return (
+                <span
+                  onClick={() => handleSelectedSeat(seat)}
+                  key={seat.id}
+                  //className={`seat ${seat.booked ? "booked" : ""}`}
+                  className={`border-solid border-2 pl-2 pr-2 pt-1 pb-1 m-2 ${
+                    isselected ? "bg-teal-700" : "border-teal-500"
+                  }`}
+                >
+                  {seat.seatNumber.charAt(1)}
+                </span>
+              );
+            })}
           </div>
         </div>
       );
@@ -68,7 +94,17 @@ const SeatLayout = () => {
 
     return rows;
   };
-  return <div>{renderSeatGrid()}</div>;
+  return (
+    <>
+      <div>{renderSeatGrid()}</div>
+      <button
+        className="bg-red-600 ml-8 pl-20 pr-20 pt-4 pb-4 text-white font-sans font-semibold"
+        onClick={() => handlePayment()}
+      >
+        Pay{payPrice}
+      </button>
+    </>
+  );
 };
 
 export default SeatLayout;
