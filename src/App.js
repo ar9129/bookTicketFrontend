@@ -26,7 +26,7 @@ function App() {
       <Route path={`/buytickets/:title/:language/:format/:city/movie-MT/seatLayout`} element={<SeatLayout />} />
       <Route path={`/Payment`} element={<PaymentPage />} />
 
-      <Route path="/Paymentstatus/UPI-status" component={<PaymentStatus />} />
+      <Route path="/Paymentstatus/UPI-status" element={<PaymentStatus />} />
       {/* Define more routes as needed */}
       </Routes>
   </Router>
