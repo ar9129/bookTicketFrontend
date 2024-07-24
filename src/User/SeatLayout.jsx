@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const SeatLayout = () => {
+  const navigate = useNavigate();
   const [seats, setSeats] = useState([]);
   const location = useLocation();
   const [selectedSeats, setSelectedSeats] = useState(new Set());
@@ -33,6 +34,7 @@ const SeatLayout = () => {
   console.log(seats);
 
   function handleSelectedSeat(seat) {
+    console.log("seat is", seat);
     const newSelectedseats = new Set(selectedSeats);
     if (newSelectedseats.has(seat)) {
       newSelectedseats.delete(seat);
@@ -45,12 +47,33 @@ const SeatLayout = () => {
     const selectedSeatsArray = Array.from(newSelectedseats);
     selectedSeatsArray.map((selectedSeat) => {
       totalPrice = totalPrice + selectedSeat.price;
+      console.log(selectedSeat.reserved);
     });
 
     setPayPrice(totalPrice);
   }
 
-  function handlePayment() {}
+  async function handlePayment() {
+    const selectedSeatsArray = Array.from(selectedSeats);
+    for (const selectedSeat of selectedSeatsArray) {
+      const response = await axios.post(
+        `http://localhost:5459/api/v1/reserve-seat/${selectedSeat.id}`
+      );
+      console.log(response);
+      console.log(`seat reserved ${selectedSeat.id} is ${response.data}`);
+      navigate(`/Payment`, {
+        state: {
+          etk: "N",
+          mtk: "Y",
+          reload: true,
+        },
+      });
+    }
+  }
+
+  const handleReservedSeat = () => {
+    console.log("Seat is reserved");
+  };
   // Function to render seats in a 2D grid
   const renderSeatGrid = () => {
     // Collect all unique row identifiers (A, B, C, etc.)
@@ -76,12 +99,17 @@ const SeatLayout = () => {
               const isselected = selectedSeats.has(seat);
               return (
                 <span
-                  onClick={() => handleSelectedSeat(seat)}
+                  onClick={() =>
+                    // handleSelectedSeat(seat.reserved ? null : seat)
+                    seat.reserved
+                      ? handleReservedSeat()
+                      : handleSelectedSeat(seat)
+                  }
                   key={seat.id}
                   //className={`seat ${seat.booked ? "booked" : ""}`}
                   className={`border-solid border-2 pl-2 pr-2 pt-1 pb-1 m-2 ${
                     isselected ? "bg-teal-700" : "border-teal-500"
-                  }`}
+                  }   ${seat.reserved ? "bg-teal-700" : "border-teal-500"}`}
                 >
                   {seat.seatNumber.charAt(1)}
                 </span>
