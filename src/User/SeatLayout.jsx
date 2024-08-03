@@ -9,6 +9,10 @@ const SeatLayout = () => {
   const [selectedSeats, setSelectedSeats] = useState(new Set());
   const [payPrice, setPayPrice] = useState(0);
   let totalPrice = 0;
+  const username = "user";
+  const password = "sa";
+
+  const credentials = btoa(`${username}:${password}`);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -18,7 +22,12 @@ const SeatLayout = () => {
         try {
           console.log("Fetching shows for town:", selectedShow); // Log the town once
           const response = await axios.get(
-            `http://localhost:5459/api/v1/get-seatLayout/${selectedShow}`
+            `http://localhost:5459/api/v1/get-seatLayout/${selectedShow}`,
+            {
+              headers: {
+                Authorization: `Basic ${credentials}`,
+              },
+            }
           );
           console.log("Fetched seats:", response.data); // Log fetched shows once
           setSeats(response.data); // Set shows state with the fetched data
@@ -57,7 +66,12 @@ const SeatLayout = () => {
     const selectedSeatsArray = Array.from(selectedSeats);
     for (const selectedSeat of selectedSeatsArray) {
       const response = await axios.post(
-        `http://localhost:5459/api/v1/reserve-seat/${selectedSeat.id}`
+        `http://localhost:5459/api/v1/reserve-seat/${selectedSeat.id}`,
+        {
+          headers: {
+            Authorization: `Basic ${credentials}`,
+          },
+        }
       );
       console.log(response);
       console.log(`seat reserved ${selectedSeat.id} is ${response.data}`);

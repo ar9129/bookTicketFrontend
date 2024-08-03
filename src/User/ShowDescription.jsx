@@ -9,6 +9,11 @@ const ShowDescription = () => {
   const [shows, setShows] = useState([]);
   const [selectedShow, setSelectedShow] = useState();
 
+  const username = "user";
+  const password = "sa";
+
+  const credentials = btoa(`${username}:${password}`);
+
   useEffect(() => {
     const fetchData = async () => {
       if (location.state) {
@@ -17,7 +22,12 @@ const ShowDescription = () => {
         try {
           console.log("Fetching shows for town:", town); // Log the town once
           const response = await axios.get(
-            `http://localhost:5459/api/v1/get-shows/${town}/${title}/${language}/${format1}`
+            `http://localhost:5459/api/v1/get-shows/${town}/${title}/${language}/${format1}`,
+            {
+              headers: {
+                Authorization: `Basic ${credentials}`,
+              },
+            }
           );
           console.log("Fetched shows:", response.data); // Log fetched shows once
           setShows(response.data); // Set shows state with the fetched data

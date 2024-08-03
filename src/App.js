@@ -9,6 +9,10 @@ import ShowDescription from './User/ShowDescription';
 import SeatLayout from './User/SeatLayout';
 import PaymentPage from './User/PaymentPage';
 import PaymentStatus from './User/PaymentStatus';
+import SearchComponent from './User/Search';
+import GoogleLoginButton from './Auth/GoogleLoginButton';
+import {gapi} from "gapi-script" ;
+import GoogleSignIn from './Auth/GoogleSignIn';
 
 
 
@@ -25,17 +29,19 @@ function App() {
       <Route path={`/buytickets/:title/:language/:format/:city/movie-MT/seatLayout`} element={<SeatLayout />} />
       <Route path={`/buytickets/:title/:language/:format/:city/movie-MT/seatLayout`} element={<SeatLayout />} />
       <Route path={`/Payment`} element={<PaymentPage />} />
+      <Route path={`/Signin`} element={<GoogleSignIn/>} />
 
       <Route path="/Paymentstatus/UPI-status" element={<PaymentStatus />} />
       {/* Define more routes as needed */}
       </Routes>
   </Router>
-   
-     
-   
 
-  
-  );
+     
+  //  <SearchComponent />
+ );
 }
 
+
+
+ 
 export default App;

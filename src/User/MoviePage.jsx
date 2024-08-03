@@ -139,7 +139,15 @@
 import React, { useEffect, useState } from "react";
 import MovieCard from "./MovieCard";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { XMarkIcon } from "@heroicons/react/20/solid";
+import GoogleLoginButton from "../Auth/GoogleLoginButton";
+import GoogleSignIn from "../Auth/GoogleSignIn";
+
+const username = "user";
+const password = "sa";
+
+const credentials = btoa(`${username}:${password}`);
 
 const MoviePage = () => {
   const filters = {
@@ -153,17 +161,45 @@ const MoviePage = () => {
   const [moviesData, setMoviesData] = useState([]);
   const navigate = useNavigate();
 
+  const [Button, setButton] = useState(false);
+
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const handleSearch = (event) => {
+    setSearchTerm(event.target.value);
+  };
+
+  const filteredItems = moviesData.filter((item) =>
+    item.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   useEffect(() => {
     getCities();
   }, []);
 
   const getCities = async () => {
     try {
-      const response = await axios.get("http://localhost:5459/api/v1/get-city");
+      const response = await axios.get(
+        "http://localhost:5459/api/v1/get-city",
+        {
+          headers: {
+            Authorization: `Basic ${credentials}`,
+          },
+        }
+      );
       setCities(response.data);
     } catch (error) {
       console.log("Error fetching cities:", error);
     }
+  };
+
+  const [signinPopup, setSigninPopup] = useState(false);
+  const openPopup = () => {
+    setSigninPopup(true);
+  };
+
+  const closePopup = () => {
+    setSigninPopup(false);
   };
 
   const handleCity = (event) => {
@@ -176,7 +212,11 @@ const MoviePage = () => {
     );
     if (selectedCity) {
       axios
-        .get(`http://localhost:5459/api/v1/get-movies/${selectedCity.name}`)
+        .get(`http://localhost:5459/api/v1/get-movies/${selectedCity.name}`, {
+          headers: {
+            Authorization: `Basic ${credentials}`,
+          },
+        })
         .then((response) => {
           setMoviesData(response.data);
           console.log("fetched movies are", response.data);
@@ -186,6 +226,15 @@ const MoviePage = () => {
           console.log("Error fetching movies:", error);
         });
     }
+  };
+
+  // const showButton = (e) => {
+  //   e.preventDefault();
+  //   setButton(true);
+  // };
+
+  const callApi = async () => {
+    window.location.href = "http://localhost:5459/";
   };
 
   return (
@@ -204,7 +253,7 @@ const MoviePage = () => {
               </select>
             </div>
             <h2 className="font-bold mb-2">Filters</h2>
-            {Object.keys(filters).map((filterKey) => (
+            {/* {Object.keys(filters).map((filterKey) => (
               <div key={filterKey}>
                 <h3 className="font-semibold">
                   {filterKey.charAt(0).toUpperCase() + filterKey.slice(1)}
@@ -219,16 +268,37 @@ const MoviePage = () => {
                   </label>
                 ))}
               </div>
-            ))}
+            ))} */}
           </div>
         </aside>
 
         <section className="w-full md:w-3/4 p-0">
-          <h2 className="font-bold mb-4">
+          {/* <h2 className="font-bold mb-4">
             Movies in {selectedCityId && `City`}
-          </h2>
+          </h2> */}
+          <div className="my-2 flex justify-between">
+            <input
+              className=" p-2 border rounded w-1/2"
+              type="text"
+              value={searchTerm}
+              onChange={handleSearch}
+              placeholder="Search movie..."
+            />
+            <button className="bg-rose-600 px-2  mr-52" onClick={openPopup}>
+              Sign in
+            </button>
+            {searchTerm && (
+              <ul>
+                {filteredItems.map((item, index) => (
+                  <li className="bg-gray-300 w-1/2 p-1 mt-0" key={index}>
+                    {item.name}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-            {moviesData.map((movie) => (
+            {(filteredItems ? filteredItems : moviesData).map((movie) => (
               <MovieCard
                 key={movie.id}
                 town={selectedCityId}
@@ -245,6 +315,29 @@ const MoviePage = () => {
           </div>
         </section>
       </div>
+
+      {signinPopup && (
+        <div className="popup fixed inset-0 flex items-center justify-center   z-50 bg-black bg-opacity-50">
+          <div className="bg-white  rounded-lg">
+            <div className="flex justify-between align-middle text-center m-2 ">
+              <div className="font-semibold m-4">Get Started</div>
+
+              <XMarkIcon className="w-5 h-5" onClick={closePopup} />
+            </div>
+            <div>
+              <input
+                // onClick={showButton}
+                type="tel"
+                placeholder="Continue with mobile number"
+                className="border-b-black"
+              ></input>
+            </div>
+            <div>
+              <Link to="/signin">sign in with google </Link>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

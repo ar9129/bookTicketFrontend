@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
+import { StarIcon, XMarkIcon } from "@heroicons/react/20/solid";
 
 export function MovieDescription() {
   const [showPopup, setShowPopup] = useState(false);
@@ -8,8 +9,16 @@ export function MovieDescription() {
   const navigate = useNavigate();
 
   // Destructure props from location.state
-  const { title, cityName, town, posterUrl, genres, languagetoFormat, rating } =
-    location.state;
+  const {
+    title,
+    cityName,
+    town,
+    posterUrl,
+    genres,
+    languagetoFormat,
+    rating,
+    overview,
+  } = location.state;
 
   const openPopup = () => {
     setShowPopup(true);
@@ -48,32 +57,118 @@ export function MovieDescription() {
   }
 
   return (
-    <div className="bg-gray-200 min-h-screen">
-      <div className="bg-cover bg-no-repeat bg-gradient-to-r from-cyan-500 to-blue-500 bg-center w-screen h-96 m-4 flex flex-row overflow-hidden">
-        <div className="object-fill">
-          <img src={posterUrl} alt="The dark night" />
-        </div>
-        <div className="flex flex-col align-middle m-6">
-          <h1 className="font-bold text-white text-4xl m-4">The dark night</h1>
-          <div className="bg-gray-700 flex flex-row justify-normal p-4 w-60 m-4">
-            <h2>{rating}/10</h2>
-            <button className="bg-gray-200 text-gray-950 m-4">Rate Now</button>
+    <div>
+      <div className="bg-opacity-50  h-1/6 relative">
+        <div
+          className="backdrop-brightness-0 bg-gradient-to-r  bg-cover bg-center mx-auto w-1/2 h-1/6  flex flex-row overflow-hidden z-0"
+          style={{
+            backgroundImage:
+              "url('https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg')",
+            filter: "brightness(70%)",
+          }}
+        >
+          {/* <div className="object-none relative mx-auto ">
+            <img
+              className="w-screen h-1/5"
+              src={posterUrl}
+              alt="The dark night"
+            />
+          </div> */}
+          <div className="flex flex-col align-middle m-6 relative z-20  ">
+            <h1 className="font-bold text-white text-4xl ">{title}</h1>
+            <div className="bg-gray-700 flex flex-row justify-around  align-middle p-4 w-60 my-4 h-14 rounded">
+              <div className="flex items-center">
+                <StarIcon className="text-red-400 h-6 w-6 mx-2" />
+                <div className=" text-white">{rating}/10</div>
+              </div>
+              <button className="bg-gray-200 text-gray-950 font-semibold px-2 rounded">
+                Rate Now
+              </button>
+            </div>
+            <div className="bg-white rounded p-1 m-1">
+              2D,3D,IMAX 2D,IMAX 3D
+            </div>
+            <div className="bg-white rounded p-1 m-1">
+              Telugu,Hindi,Kannada,Malayalam,Tamil
+            </div>
+            <div className="p-2 text-white">3h 1m•Action,Sci-Fi,Thriller</div>
+            <button
+              onClick={openPopup}
+              className="bg-red-500 p-2 w-3/4 my-5 text-white rounded-md"
+            >
+              Book Tickets
+            </button>
           </div>
-          <button
-            onClick={openPopup}
-            className="bg-red-500 px-4 py-2 text-white rounded-md"
-          >
-            Book Tickets
-          </button>
+        </div>
+        <div className="mx-4 sm:mx-8 lg:mx-28 xl:mx-96">
+          <div className="font-semibold text-lg sm:text-xl lg:text-2xl xl:text-3xl">
+            About the Movie
+          </div>
+          <div className="py-3 sm:py-5">{overview}</div>
+          <hr className="sm:hidden" />{" "}
+          {/* Hide the horizontal rule on small screens */}
+          <div className="font-semibold text-lg sm:text-xl lg:text-2xl xl:text-3xl">
+            Cast
+          </div>
+          <div className="flex justify-between text-center">
+            <div>
+              <img
+                className="rounded-full w-20 h-20 sm:w-32 sm:h-32 py-3 sm:py-5"
+                src="https://www.vhv.rs/dpng/d/408-4087530_person-icon-grey-grey-person-icon-png-transparent.png"
+              ></img>
+              Shreya
+            </div>
+            <div>
+              <img
+                className="rounded-full w-20 h-20 sm:w-32 sm:h-32 py-3 sm:py-5"
+                src="https://www.vhv.rs/dpng/d/408-4087530_person-icon-grey-grey-person-icon-png-transparent.png"
+              ></img>
+              Aditya
+            </div>
+            <div>
+              <img
+                className="rounded-full w-20 h-20 sm:w-32 sm:h-32 py-3 sm:py-5"
+                src="https://www.vhv.rs/dpng/d/408-4087530_person-icon-grey-grey-person-icon-png-transparent.png"
+              ></img>
+              Anamika
+            </div>
+            <div>
+              <img
+                className="rounded-full w-20 h-20 sm:w-32 sm:h-32 py-3 sm:py-5"
+                src="https://www.vhv.rs/dpng/d/408-4087530_person-icon-grey-grey-person-icon-png-transparent.png"
+              ></img>
+              Ragini
+            </div>
+          </div>
+          <hr className="sm:hidden" />
+          <div className="font-semibold text-lg sm:text-xl lg:text-2xl xl:text-3xl my-3 sm:my-5">
+            Top Reveiws
+          </div>
+          <div>
+            <div className="flex justify-start">
+              <div className="flex justify-start bg-red-400 text-center align-middle">
+                <div>4</div>
+                <StarIcon className="text-white h-4 w-4 mt-1 " />
+              </div>
+            </div>
+          </div>
         </div>
       </div>
 
       {showPopup && languagetoFormat && (
         <div className="popup fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg">
+          <div className="bg-white  rounded-lg">
+            <div className="flex justify-between align-middle text-center m-2 ">
+              <div className="font-semibold m-4">
+                Select language and Format
+              </div>
+              <XMarkIcon className="w-5 h-5" onClick={closePopup} />
+            </div>
             {Object.entries(languagetoFormat).map(([language, formats]) => (
               <div key={language}>
-                <h3>{language}</h3>
+                <div className="bg-gray-200 p-1 m-1 rounded-md ">
+                  {language}
+                </div>
                 <form>
                   {formats.map((format) => (
                     <div
@@ -82,7 +177,7 @@ export function MovieDescription() {
                     >
                       <button
                         onClick={handleTicket}
-                        className="bg-red-500 text-white m-2"
+                        className="text-red-500 p-1 m-3 ml-4 rounded-xl border border-gray-300"
                         id={`${language}-${format}`}
                         name={`${language}-formats`}
                         value={`${language}-${format}`}

@@ -136,7 +136,7 @@ const PaymentPage = () => {
           </MenuItems>
         </Menu>
       </div>
-      <div className="w-2/6 pl-4 ">
+      {/* <div className="w-2/6 pl-4 ">
         <div className="flex flex-row font-sans  bg-white  justify-around border-b-2 border-dashed">
           <div>
             <div className="w-3/4 py-3 tracking-widest font-light text-base">
@@ -152,16 +152,32 @@ const PaymentPage = () => {
             <div className="text-xs">Tue, 23 Jul, 2024</div>
             <div className="text-xs pb-6">10:30 PM</div>
             {/* <hr className="border-dotted" /> */}
-          </div>
+      {/* </div>
 
           <div className="mt-6 ">
             <div className="text-3xl">2</div>
             <div>Tickets</div>
           </div>
-        </div>
-        {/* <div flex flex-row p-4>
+        </div> */}
+      {/* <div flex flex-row p-4>
           <div>Sub Total</div>
         </div> */}
+      {/* </div>
+    </div> */}
+
+      <div class="sm:w-full md:w-1/2 lg:w-1/3 xl:w-1/4 px-2 mb-4">
+        <div class="flex flex-col border border-gray-200 p-4 bg-white rounded-lg shadow-md">
+          <div class="font-medium text-lg mb-2">ORDER SUMMARY</div>
+          <div class="text-sm mb-2">Kalki 2898 AD (3D Hindi) (U/A)</div>
+          <div class="text-xs mb-1">Hindi, 3D</div>
+          <div class="text-xs mb-1">INOX: Brookefield Mall (SCREEN 2)</div>
+          <div class="text-xs mb-1">M-Ticket</div>
+          <div class="text-xs mb-1">EX-H8,H9</div>
+          <div class="text-xs mb-1">Tue, 23 Jul, 2024</div>
+          <div class="text-xs mb-4">10:30 PM</div>
+          <div class="text-xl mb-2">2</div>
+          <div class="text-sm">Tickets</div>
+        </div>
       </div>
     </div>
   );
