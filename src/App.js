@@ -13,6 +13,7 @@ import SearchComponent from './User/Search';
 import GoogleLoginButton from './Auth/GoogleLoginButton';
 import {gapi} from "gapi-script" ;
 import GoogleSignIn from './Auth/GoogleSignIn';
+import LoginPage from './Auth/LoginPage';
 
 
 
@@ -29,7 +30,7 @@ function App() {
       <Route path={`/buytickets/:title/:language/:format/:city/movie-MT/seatLayout`} element={<SeatLayout />} />
       <Route path={`/buytickets/:title/:language/:format/:city/movie-MT/seatLayout`} element={<SeatLayout />} />
       <Route path={`/Payment`} element={<PaymentPage />} />
-      <Route path={`/Signin`} element={<GoogleSignIn/>} />
+      <Route path={`/Signin`} element={<LoginPage />} />
 
       <Route path="/Paymentstatus/UPI-status" element={<PaymentStatus />} />
       {/* Define more routes as needed */}

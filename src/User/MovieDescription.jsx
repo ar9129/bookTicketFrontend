@@ -63,7 +63,7 @@ export function MovieDescription() {
           className="backdrop-brightness-0 bg-gradient-to-r  bg-cover bg-center mx-auto w-1/2 h-1/6  flex flex-row overflow-hidden z-0"
           style={{
             backgroundImage:
-              "url('https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg')",
+              "url('https://assets-in.bmscdn.com/iedb/movies/images/mobile/listing/xxlarge/auron-mein-kahan-dum-tha-et00378240-1722408422.jpg')",
             filter: "brightness(70%)",
           }}
         >
@@ -111,34 +111,16 @@ export function MovieDescription() {
             Cast
           </div>
           <div className="flex justify-between text-center">
-            <div>
-              <img
-                className="rounded-full w-20 h-20 sm:w-32 sm:h-32 py-3 sm:py-5"
-                src="https://www.vhv.rs/dpng/d/408-4087530_person-icon-grey-grey-person-icon-png-transparent.png"
-              ></img>
-              Shreya
-            </div>
-            <div>
-              <img
-                className="rounded-full w-20 h-20 sm:w-32 sm:h-32 py-3 sm:py-5"
-                src="https://www.vhv.rs/dpng/d/408-4087530_person-icon-grey-grey-person-icon-png-transparent.png"
-              ></img>
-              Aditya
-            </div>
-            <div>
-              <img
-                className="rounded-full w-20 h-20 sm:w-32 sm:h-32 py-3 sm:py-5"
-                src="https://www.vhv.rs/dpng/d/408-4087530_person-icon-grey-grey-person-icon-png-transparent.png"
-              ></img>
-              Anamika
-            </div>
-            <div>
-              <img
-                className="rounded-full w-20 h-20 sm:w-32 sm:h-32 py-3 sm:py-5"
-                src="https://www.vhv.rs/dpng/d/408-4087530_person-icon-grey-grey-person-icon-png-transparent.png"
-              ></img>
-              Ragini
-            </div>
+            {["Shreya", "Aditya", "Anamika", "Ragini"].map((name, index) => (
+              <div key={index} className="flex flex-col items-center">
+                <img
+                  className="rounded-full w-20 h-20 sm:w-32 sm:h-32 py-3 sm:py-5"
+                  src="https://www.vhv.rs/dpng/d/408-4087530_person-icon-grey-grey-person-icon-png-transparent.png"
+                  alt={name}
+                />
+                <div>{name}</div>
+              </div>
+            ))}
           </div>
           <hr className="sm:hidden" />
           <div className="font-semibold text-lg sm:text-xl lg:text-2xl xl:text-3xl my-3 sm:my-5">
