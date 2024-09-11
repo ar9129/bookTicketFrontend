@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useLocation, useNavigate } from "react-router-dom";
+import { getData } from "../API-Integeration/API";
 
 const SeatLayout = () => {
   const navigate = useNavigate();
@@ -21,14 +22,7 @@ const SeatLayout = () => {
         console.log(location.state);
         try {
           console.log("Fetching shows for town:", selectedShow); // Log the town once
-          const response = await axios.get(
-            `http://localhost:5459/api/v1/get-seatLayout/${selectedShow}`,
-            {
-              headers: {
-                Authorization: `Basic ${credentials}`,
-              },
-            }
-          );
+          const response = await getData("get-seatLayout/${selectedShow}");
           console.log("Fetched seats:", response.data); // Log fetched shows once
           setSeats(response.data); // Set shows state with the fetched data
         } catch (error) {

@@ -2,6 +2,7 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { format } from "date-fns";
+import { getData } from "../API-Integeration/API";
 
 const ShowDescription = () => {
   const location = useLocation();
@@ -21,14 +22,10 @@ const ShowDescription = () => {
         console.log(location.state);
         try {
           console.log("Fetching shows for town:", town); // Log the town once
-          const response = await axios.get(
-            `http://localhost:5459/api/v1/get-shows/${town}/${title}/${language}/${format1}`,
-            {
-              headers: {
-                Authorization: `Basic ${credentials}`,
-              },
-            }
+          const response = await getData(
+            "get-shows/${town}/${title}/${language}/${format1}"
           );
+
           console.log("Fetched shows:", response.data); // Log fetched shows once
           setShows(response.data); // Set shows state with the fetched data
         } catch (error) {

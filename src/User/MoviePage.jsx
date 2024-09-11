@@ -143,6 +143,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { XMarkIcon, FunnelIcon } from "@heroicons/react/20/solid";
 import GoogleLoginButton from "../Auth/GoogleLoginButton";
 import GoogleSignIn from "../Auth/GoogleSignIn";
+import { getData } from "../API-Integeration/API";
 
 const username = "user";
 const password = "sa";
@@ -176,14 +177,7 @@ const MoviePage = () => {
 
   const getCities = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:5459/api/v1/get-city",
-        {
-          headers: {
-            Authorization: `Basic ${credentials}`,
-          },
-        }
-      );
+      const response = await getData("get-city");
       setCities(response.data);
     } catch (error) {
       console.log("Error fetching cities:", error);
@@ -192,14 +186,7 @@ const MoviePage = () => {
 
   const getMovies = async () => {
     try {
-      const response = await axios.get(
-        "http://localhost:5459/api/v1/get-movies/Nalanda",
-        {
-          headers: {
-            Authorization: `Basic ${credentials}`,
-          },
-        }
-      );
+      const response = await getData("get-movies/Nalanda");
       setMoviesData(response.data);
     } catch (error) {
       console.log("Error fetching movies:", error);
