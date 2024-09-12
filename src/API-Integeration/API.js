@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // const BASE_URL = 'http://localhost:5459/api/v1';
-const BASE_URL = 'https://my-spring-boot-app-latest-um3b.onrender.com';
+const BASE_URL = 'https://my-spring-boot-app-latest-1.onrender.com';
 
 const api = axios.create({
   baseURL: BASE_URL,
